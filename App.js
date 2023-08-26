@@ -15,23 +15,39 @@ import Carousel from "react-native-snap-carousel";
 function App() {
   const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState([]);
+  const [showCarousel, setShowCarousel] = useState(true);
 
   const API_KEY = "YOUR_API_KEY_HERE"; // Replace with your API key
   const API_URL = `API_URL_HERE`; // Replace with your API URL
 
   const fetchWeatherData = async () => {
-    try {
-      const response = await fetch(API_URL);
-      const data = await response.json();
-      setWeatherData(data.list);
-    } catch (error) {
-      console.error("Error fetching weather data:", error);
-    }
+    // try {
+    //   const response = await fetch(API_URL);
+    //   const data = await response.json();
+    //   setWeatherData(data.list);
+    // } catch (error) {
+    //   console.error("Error fetching weather data:", error);
+    // }
+    const fakeWeatherData = {
+      temperature: 24,
+      description: "Sunny",
+    };
+
+    setWeatherData(fakeWeatherData);
   };
 
   useEffect(() => {
     fetchWeatherData();
   }, []);
+
+  const toggleCarousel = () => {
+    setShowCarousel(!showCarousel);
+  };
+
+  const combinedFunction = () => {
+    fetchWeatherData(); // Call the first function
+    toggleCarousel(); // Call the second function
+  };
 
   return (
     <ImageBackground
@@ -45,10 +61,17 @@ function App() {
           value={city}
           onChangeText={setCity}
         />
-        <TouchableOpacity style={styles.button} onPress={fetchWeatherData}>
+        <TouchableOpacity style={styles.button} onPress={combinedFunction}>
           <Text style={styles.buttonText}>Dress me!</Text>
         </TouchableOpacity>
       </View>
+
+      {/* {weatherData && (
+        <View style={styles.weatherInfo}>
+          <Text style={styles.temperature}>{weatherData.temperature}°C</Text>
+          <Text style={styles.description}>{weatherData.description}</Text>
+        </View>
+      )} */}
 
       <FlatList
         data={weatherData}
@@ -71,30 +94,32 @@ function App() {
           </View>
         )}
       />
-      <Carousel
-        data={[
-          require("/Users/minoukh/Desktop/WeatherApp/image/image1.png"),
-          require("/Users/minoukh/Desktop/WeatherApp/image/image2.png"),
-          require("/Users/minoukh/Desktop/WeatherApp/image/image3.png"),
-          require("/Users/minoukh/Desktop/WeatherApp/image/image4.png"),
-          // Add more image paths here
-        ]}
-        renderItem={({ item }) => (
-          <Image source={item} style={styles.carouselImage} />
-        )}
-        sliderWidth={300}
-        itemWidth={300}
-        autoplay={true}
-        autoplayInterval={3000}
-        loop={true} // Enable continuous looping of the carousel
-        layout={"stack"} // Adjust the layout style (options: 'default', 'tinder', 'stack')
-        layoutCardOffset={18} // Adjust the offset between stacked cards
-        layoutCardScale={0.9} // Scale factor for the stacked cards
-        inactiveSlideOpacity={0.6} // Opacity of inactive slides
-        inactiveSlideScale={0.85} // Scale factor of inactive slides
-        enableSnap={true} // Enable snapping to slide positions
-        containerCustomStyle={styles.carouselContainer} // Apply custom styling to the carousel container
-      />
+      {showCarousel && (
+        <Carousel
+          data={[
+            require("/Users/minoukh/Desktop/WeatherApp/image/image1.png"),
+            require("/Users/minoukh/Desktop/WeatherApp/image/image2.png"),
+            require("/Users/minoukh/Desktop/WeatherApp/image/image3.png"),
+            require("/Users/minoukh/Desktop/WeatherApp/image/image4.png"),
+            // Add more image paths here
+          ]}
+          renderItem={({ item }) => (
+            <Image source={item} style={styles.carouselImage} />
+          )}
+          sliderWidth={300}
+          itemWidth={300}
+          autoplay={true}
+          autoplayInterval={3000}
+          loop={true} // Enable continuous looping of the carousel
+          layout={"stack"} // Adjust the layout style (options: 'default', 'tinder', 'stack')
+          layoutCardOffset={18} // Adjust the offset between stacked cards
+          layoutCardScale={0.9} // Scale factor for the stacked cards
+          inactiveSlideOpacity={0.6} // Opacity of inactive slides
+          inactiveSlideScale={0.85} // Scale factor of inactive slides
+          enableSnap={true} // Enable snapping to slide positions
+          containerCustomStyle={styles.carouselContainer} // Apply custom styling to the carousel container
+        />
+      )}
     </ImageBackground>
   );
 }

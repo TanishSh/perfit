@@ -1,2 +1,0 @@
-# perfit
- hackathon project

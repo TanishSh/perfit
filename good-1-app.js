@@ -31,35 +31,29 @@ function App() {
   const fetchWeatherData = async () => {
     try {
       console.log(`1 -> ${API_LALO_URL}?q=${city}&appid=${API_KEY}`);
-      fetch(`${API_LALO_URL}?q=${city}&appid=${API_KEY}`)
+      fetch(`${API_LALO_URL}?q=${city}&appid=${API_KEY}`) // https://api.openweathermap.org/geo/1.0/direct?q=toronto&appid=13237acc449e4d531a2b50d2a43bd9e1
         .then(response => response.json())
         .then(data => {
           var apiResponse = data[0];
           setLat(apiResponse.lat);
           setLon(apiResponse.lon);
-          console.log("2 -> ", apiResponse.lat, apiResponse.lon); // Use apiResponse.lat and apiResponse.lon
-          return fetch(`${API_WEATHER_URL}?lat=${apiResponse.lat}&lon=${apiResponse.lon}&appid=${API_KEY}`);
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log("3 -> ", data.list);
-          setWeatherData(data.list);
+          console.log("2 -> ", lat, lon)
         })
         .catch(error => {
           console.error("Error fetching data:", error);
         });
+
+      const response = await fetch(`${API_WEATHER_URL}?lat=${lat}&lon=${lon}&appid=${API_KEY}`); // https://api.openweathermap.org/data/2.5/forecast?lat=43.6534817&lon=-79.3839347&appid=13237acc449e4d531a2b50d2a43bd9e1
+      const data = await response.json();
+      console.log("3 -> ", data.list);
+      // setWeatherData(data.list);  
+
+
+
     } catch (error) {
       console.error("Error:", error);
     }
   };
-  
-
-
-
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
 
 
   useEffect(() => {

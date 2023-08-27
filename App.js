@@ -26,7 +26,25 @@ function App() {
   var API_LALO_URL = `https://api.openweathermap.org/geo/1.0/direct`;
   var API_WEATHER_URL = `https://api.openweathermap.org/data/2.5/forecast`;
 
-  const countries = ["Egypt", "Canada", "Australia", "Ireland"]
+  const selectTimeframe = [
+    "Tomorrow",
+    "Day After Tomorrow",
+    "In 3 Days",
+    "In 4 Days",
+    "In 5 Days"
+];
+  const selectTimeSlot = [
+    "00:00 (Midnight)",
+    "03:00",
+    "06:00",
+    "09:00",
+    "12:00 (Noon)",
+    "15:00",
+    "18:00",
+    "21:00"
+];
+
+
 
   const fetchWeatherData = async () => {
     try {
@@ -87,8 +105,17 @@ function App() {
             onChangeText={setCity}
           />
           <View style={styles.inputContainer}>
+            <View style={styles.leftContainer}>
+              <Text style={styles.leftText}>Time Frame</Text>
+            </View>
+            <View style={styles.rightContainer}>
+              <Text style={styles.rightText}>Time Slot</Text>
+            </View>
+          </View>
+          <View style={styles.inputContainer}>
             <SelectDropdown
-              data={countries}
+              data={selectTimeframe}
+              buttonText="Select Time Frame"
               onSelect={(selectedItem, index) => {
                 console.log(selectedItem, index)
               }}
@@ -104,7 +131,8 @@ function App() {
               }}
             />
             <SelectDropdown
-              data={countries}
+              data={selectTimeSlot}
+              buttonText={"Select Time Slot"}
               onSelect={(selectedItem, index) => {
                 console.log(selectedItem, index)
               }}
@@ -181,6 +209,20 @@ function App() {
 }
 
 const styles = StyleSheet.create({
+  leftContainer: {
+    flex: 1, // Take up half of the available space
+    alignItems: "center",
+  },
+  rightContainer: {
+    flex: 1, // Take up half of the available space
+    alignItems: "center", // Align to the right
+  },
+  leftText: {
+    textAlign: "center",
+  },
+  rightText: {
+    textAlign: "center",
+  },
   background: {
     flex: 1,
     resizeMode: "cover",
